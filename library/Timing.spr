@@ -1,0 +1,21 @@
+data Clock = Clock(ClockEdge edge, Frequency freq, SciNotation sci)
+data ClockEdge = Posedge ? Negedge
+type Frequency = Single
+
+data SciNotation = Norm ? Femto ? Pico ? Nano ? Micro ? Milli ? Centi ? Deci ? Deka ? Hecto ? Kilo ? Mega ? Giga ? Tera ? Peta
+
+data Reset = Reset(Level lvl, Sync sync)
+
+data Level = High ? Low
+
+data Sync = Sync ? Async
+
+data TimingInfo = TimingInfo(Single delay, SciNotation sci, Vector[Operator] op)
+
+context BasicTiming:
+    time_pm    = TimingInfo(500, Pico, [+,-])
+    time_time  = TimingInfo(3000, Pico, [*])
+    time_shift = TimingInfo(500, Pico, [<<, >>])
+    time_bitop = TimingInfo(300, Pico, [&, |, ~])
+    time_xor   = TimingInfo(500, Pico, [^])
+    time_logic = TimingInfo(300, Pico, [&&, ||, !])

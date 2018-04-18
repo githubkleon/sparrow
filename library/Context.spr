@@ -1,0 +1,20 @@
+context AXI:
+    clock = Clock(Posedge, 200, Mega)
+    reset = Reset(High, Sync)
+    data_width = 64
+    addr_width = 32
+    address_initial  = 32'h0000
+    address_terminal = 32'hffff
+    domain_id = 1
+
+context AXIS:
+    clock = Clock(Posedge, 200, Mega)
+    reset = Reset(High, Sync)
+    data_width = 64
+    domain_id = 1
+
+context FPGA{BasicTiming}:
+    clock = Clock(Posedge, 200, Mega)
+    reset = Reset(High, Sync)
+    device = "vc709"
+    device_id = 1
