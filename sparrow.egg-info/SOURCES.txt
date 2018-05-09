@@ -1,7 +1,0 @@
-sparrow.py
-sparrow.egg-info/PKG-INFO
-sparrow.egg-info/SOURCES.txt
-sparrow.egg-info/dependency_links.txt
-sparrow.egg-info/entry_points.txt
-sparrow.egg-info/requires.txt
-sparrow.egg-info/top_level.txt

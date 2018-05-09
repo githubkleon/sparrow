@@ -18,4 +18,4 @@ context BasicTiming:
     time_shift = TimingInfo(500, Pico, [<<, >>])
     time_bitop = TimingInfo(300, Pico, [&, |, ~])
     time_xor   = TimingInfo(500, Pico, [^])
-    time_logic = TimingInfo(300, Pico, [&&, ||, !])
+    time_logic = TimingInfo(300, Pico, [&&, ||, !, ==, !=])

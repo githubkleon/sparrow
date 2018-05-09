@@ -4,3 +4,6 @@ This is an early prototype of Sparrow, a description language aiming at generati
 
 This project is protected by GPLv3 LICENSE. Before you modifying this project, please read GPLv3 LICENSE carefully.
 
+## Installation
+
+Run "pip install --editable ." to install Sparrow.

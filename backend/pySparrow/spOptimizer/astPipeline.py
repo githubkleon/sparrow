@@ -44,7 +44,10 @@ class PathNode:
 
 
 def pipelineContainer(ast, container):
-    clockCycle = spLib.SCINOTATION['Giga'] / spLib.SCINOTATION[container.clock.args[2].name] / float(container.clock.args[1].value)
+    if container.clock:
+        clockCycle = spLib.SCINOTATION['Giga'] / spLib.SCINOTATION[container.clock.args[2].name] / float(container.clock.args[1].value)
+    else:
+        clockCycle = 10
     log.spInfo(0, "CLOCK CYCLE", clockCycle)
     outputs = getOutputPorts(container.buses)
     drain = Vertex(0, 0, None, buildGraph(outputs, clockCycle), None, genMarks(len(outputs)))
