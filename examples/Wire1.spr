@@ -1,0 +1,5 @@
+container wire1(
+    input  UInt[1] a;
+    output UInt[1] b;
+):
+    b = a

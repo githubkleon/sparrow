@@ -1,0 +1,5 @@
+container comparer(
+    input  UInt[32] a,b;
+    output Bool eq;
+):
+    eq = a == b

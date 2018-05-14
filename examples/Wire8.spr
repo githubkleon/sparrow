@@ -1,0 +1,5 @@
+container wire8(
+    input  UInt[8] a;
+    output UInt[8] b;
+):
+    b = a

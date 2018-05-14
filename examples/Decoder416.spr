@@ -1,0 +1,7 @@
+container decoder416(
+    input  UInt[4] sel;
+    output UInt[16] val;
+):
+    val = case(sel):
+        gfor i in range(16):
+            i : 1 << i

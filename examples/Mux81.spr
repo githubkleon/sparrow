@@ -1,0 +1,8 @@
+container mux81(
+    input  UInt[8] insig;
+    input  UInt[3] sel;
+    output UInt[1] outsig;
+):
+    outsig = case(sel):
+        gfor i in range(8):
+            i : insig[i]

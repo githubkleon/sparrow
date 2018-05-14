@@ -1,0 +1,9 @@
+data RDMA = RDMA(
+    UInt[16] src_port,
+    UInt[16] dst_address ,
+    UInt[16] length,
+    UInt[16] checksum
+)
+
+interface master rdma{simple_axis}:
+    master RDMA header 

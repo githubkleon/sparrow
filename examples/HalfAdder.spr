@@ -1,0 +1,6 @@
+container half_adder(
+    input  UInt[1] a, b, cin;
+    output UInt[1] sum, cout;
+):
+    sum  = a ^ b
+    cout = a & b

@@ -1,0 +1,8 @@
+container mux21(
+    input  UInt[2] insig;
+    input  UInt[1] sel;
+    output UInt[1] outsig;
+):
+    outsig = case(sel):
+        gfor i in range(2):
+            i : insig[i]

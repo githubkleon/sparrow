@@ -1,0 +1,23 @@
+rot(x, k) = (((x)<<(k)) | ((x)>>(32-(k))))
+xorot(x, y, z) = (x ^ y) - rot(y, z)
+initval = 32'hdeadbeef
+
+container hash (
+    input  UInt[96] key;
+    output UInt[32] index;
+):
+    self.clock = Clock(Posedge, 200, Mega)
+    self.reset = Reset(High, Sync)
+
+    a = initval() + key[95:64]
+    b = initval() + key[63:32]
+    c = initval() + key[31:0]
+
+    c1 = xorot(c, b, 14)
+    a1 = xorot(a, c1, 11)
+    b1 = xorot(b, a1, 11)
+    c2 = xorot(c1, b1, 16)
+    a2 = xorot(a1, c2, 4)
+    b2 = xorot(b1, a2, 14)
+    c3 = xorot(c2, b2, 24)
+    index = c3

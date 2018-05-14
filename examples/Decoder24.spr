@@ -1,0 +1,7 @@
+container decoder24(
+    input  UInt[2] sel;
+    output UInt[4] val;
+):
+    val = case(sel):
+        gfor i in range(4):
+            i : 1 << i

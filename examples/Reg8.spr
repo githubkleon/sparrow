@@ -1,0 +1,6 @@
+container reg1(
+    input  UInt[8] a;
+    output UInt[8] b;
+):
+    var UInt[8] b <- 0:
+        a

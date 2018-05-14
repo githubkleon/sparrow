@@ -1,0 +1,6 @@
+container full_adder8(
+    input  UInt[8] a, b, cin;
+    output UInt[8] sum, cout;
+):
+    sum  = a ^ b ^ cin
+    cout = (a & b) | (b & cin) | (a & cin)

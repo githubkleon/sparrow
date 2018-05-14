@@ -1,0 +1,15 @@
+container basic_alu(
+    input   UInt[4] a, b, opcode;
+    output  UInt[4] result
+):
+    result = case opcode:
+        0 : a
+        1 : b
+        2 : a + 1
+        3 : a - 1
+        4 : a + 4
+        5 : a - 4
+        6 : a + b
+        7 : a - b
+        8 : a < b
+        _ : a == b

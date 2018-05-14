@@ -1,0 +1,8 @@
+container latch(
+    input  UInt[1] a;
+    output UInt[1] b;
+):
+    var UInt[1] c <- 0: a
+
+    var UInt[1] b <- 0:
+        if ((~a) & c): 1

@@ -1,0 +1,24 @@
+data VendState = IDLE ? S5 ? S10 ? S15 ? SOK
+
+container vending_machine (
+    input  Bool nickel, dime ;
+    output Bool valid        ;
+):
+
+    var VendState state <- IDLE :
+        case state :
+            IDLE : 
+                if nickel : S5
+                elif dime : S10 
+            S5   : 
+                if nickel : S10
+                elif dime : S15
+            S10  : 
+                if nickel : S15
+                elif dime : SOK
+            S15  : 
+                if nickel : SOK
+                elif dime : SOK
+            SOK  :  IDLE
+
+    valid = state == SOK
