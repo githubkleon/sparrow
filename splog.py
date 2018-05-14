@@ -4,7 +4,7 @@ import sys
 
 DEBUG = True
 
-LOG_PRIORITY = 9
+LOG_PRIORITY = 0
 
 class SPError(Enum):
     PROJECT_EXIST_ERROR = auto()

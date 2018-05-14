@@ -130,7 +130,7 @@ class Constructor(Node):
         self.lineno = lineno
 
     def __repr__(self):
-        return "Constructor{%r, \n%r}" % (self.name, self.elements)
+        return "Constructor{%r, \nelements=%r}" % (self.name, self.elements)
 
 
 class ConstructorParameter(Node):
@@ -181,15 +181,16 @@ class ContainerDef(Node):
 
 
 class InterfaceDef(Node):
-    def __init__(self, name, direct, paras=[], buses=[], lineno=0):
+    def __init__(self, name, direct, inherit=None, paras=[], buses=[], lineno=0):
         self.name = name
+        self.inherit = inherit
         self.paras = paras
         self.buses = buses
         self.lineno = lineno
 
     def __repr__(self):
-        return "InterfaceDef{%r, paras=%r, buses=%r}" % (
-            self.name, self.paras, self.buses)
+        return "InterfaceDef{%r, inherit=%r, paras=%r, buses=%r}" % (
+            self.name, self.inherit, self.paras, self.buses)
 
 
 class Identifier(Node):
@@ -279,7 +280,7 @@ class AnonymousFunctionDef(Node):
         self.returntype = returntype
 
     def __repr__(self):
-        return "AnonymousFunctionDef{%r, \n%r, \n%r, \nsource=%r}" % (self.name, self.suite, self.returntype, self.source)
+        return "AnonymousFunctionDef{%r, \nsuite=%r, \nreturntype=%r, \nsource=%r}" % (self.name, self.suite, self.returntype, self.source)
 
 
 class Parameter(Node):

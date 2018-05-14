@@ -82,7 +82,7 @@ def tracebackdrain(drain, container, ast, expectedType=None):
     if (isinstance(drain, PortDef)):
         if drain.direct == "output" or drain.direct == "out":
             srcs = findSources(drain.name.name, container, ast, True)
-            log.spInfo(0, "Sources Found")
+            log.spInfo(0, "Sources Found:", srcs)
             checkMultiDrive(srcs, "Output port " + str(drain.name))
             drain.source = srcs[0]
             if isinstance(srcs[0], VariableDef):
@@ -91,6 +91,7 @@ def tracebackdrain(drain, container, ast, expectedType=None):
             drain.traced = True
             tracebackdrain(srcs[0], container, ast)
         elif drain.direct == "input" or drain.direct == "in":
+            log.spInfo(1, "TYPE NOT MATCH", drain.type, " ", expectedType)
             if drain.type != expectedType:
                 log.spError(log.SPError.TYPE_NOT_MATCH_ERROR,
                             "The type of the input port " + str(drain.name.name) +
@@ -98,6 +99,7 @@ def tracebackdrain(drain, container, ast, expectedType=None):
                             ", but " + expectedType.name.name + " is inferred.")
     elif isinstance(drain, AnonymousFunctionDef):
         log.spInfo(0, "Look to anonymousfunc %r"%drain)
+        log.spInfo(0, "Look to anonymousfunc return type %r" % drain)
         drain.source = tracebackdrain(drain.suite, container, ast, drain.returntype)
         drain.traced = True
     elif isinstance(drain, Identifier):
@@ -106,7 +108,7 @@ def tracebackdrain(drain, container, ast, expectedType=None):
         log.spInfo(0, srcs)
         checkMultiDrive(srcs, "Wire " + str(drain.name))
         determineType(srcs[0], expectedType)
-        tracebackdrain(srcs[0], container, ast)
+        tracebackdrain(srcs[0], container, ast, expectedType)
         drain.source = srcs[0]
         return srcs[0]
     elif isinstance(drain, FunctionCall):
@@ -855,9 +857,14 @@ def expandGenStructInSuite(suite):
                     for i in forlist:
                         expandSuites.append(Case(test=replaceid(i, case_entry.test, iterator_id),
                                                  suite=replaceid(i, case_entry.suite, iterator_id)))
+            # for expSuite in expandSuites:
+            #     evalTest(expSuite)
             return expandSuites
     elif isinstance(suite, Case):
         return [Case(test=suite.test, suite=expandGenStructInSuite(suite.suite))]
+    else:
+        return suite
+
 
 def replaceid(res, suite, id):
     log.spInfo(0, "replaceid", res, suite, id)
@@ -879,6 +886,18 @@ def replaceid(res, suite, id):
     elif isinstance(suite, UnaryOperation):
         return UnaryOperation(expr=replaceid(res, suite.expr, id),
                                          op=suite.op)
+    elif isinstance(suite, Pointer):
+        return Pointer(name=suite.name, tensors=replaceid(res, suite.tensors, id))
+    elif isinstance(suite, TensorList):
+        return TensorList(replaceid(res, suite.tensors, id))
+    elif isinstance(suite, list):
+        suitelist = []
+        for suite_one in suite:
+            suitelist.append(replaceid(res, suite_one, id))
+        return suitelist
+    else:
+        log.spInfo(0, "What is this suite:", suite)
+        return suite
 
 
 def genIntNumber(value):
@@ -894,3 +913,24 @@ def setClockReset(ast):
                         stmt.clock = decl.suite
                     if decl.name.name == "reset" and decl.name.scopes[0] == "self":
                         stmt.reset = decl.suite
+
+def getInterfaceList(ast):
+    itfs = []
+    for stmt in ast.module.stmts:
+        if isinstance(stmt, InterfaceDef):
+            itfs.append(stmt)
+    return itfs
+
+def getTypeDefinition(ast, itf):
+    for stmt in ast.module.stmts:
+        if isinstance(stmt, TypeDef):
+            if stmt.name.name.name == itf:
+                return stmt
+
+def genParseVector(typedef):
+    header = 0
+    parseVec = []
+    for elem in typedef.constructors[0].elements:
+        parseVec.append((elem.identifier.name, int(elem.type.tensors.tensors[0].value)))
+        header += int(elem.type.tensors.tensors[0].value)
+    return header, parseVec

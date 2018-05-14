@@ -586,7 +586,7 @@ def p_constructor_param_list(p):
     """
     constructor_param_list : LPAREN constructor_params RPAREN
     """
-    p[0] = p[1]
+    p[0] = p[2]
     p.set_lineno(0, p.lineno(1))
 
 
@@ -874,7 +874,7 @@ def p_inherit(p):
     """
     inherit : LBRACE argument_end RBRACE
     """
-    p[0] = p[1]
+    p[0] = p[2]
     p.set_lineno(0, p.lineno(1))
 
 
@@ -1379,9 +1379,9 @@ def p_tensor_select_list_one(p):
 
 def p_interface_def(p):
     """
-    interface_def : INTERFACE identifier bus_direction parameterdef_list COLON interface_bus_list
+    interface_def : INTERFACE bus_direction identifier inherit parameterdef_list COLON interface_bus_list_indent
     """
-    p[0] = InterfaceDef(name=p[2], direct=p[3], paras=p[4], buses=p[5])
+    p[0] = InterfaceDef(name=p[3], direct=p[2], inherit=p[4],  paras=p[5], buses=p[7])
     p.set_lineno(0, p.lineno(1))
 
 
@@ -1394,6 +1394,17 @@ def p_bus_direction(p):
     p.set_lineno(0, p.lineno(1))
 
 
+def p_interface_bus_list_indent(p):
+    """
+    interface_bus_list_indent : interface_bus_list
+                              | NEWLINE INDENT interface_bus_list DEDENT
+    """
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = p[3]
+        p.set_lineno(0, p.lineno(1))
+
 def p_interface_bus_list(p):
     """
     interface_bus_list : interface_buses interface_bus
@@ -1401,6 +1412,12 @@ def p_interface_bus_list(p):
     p[0] = p[1] + [p[2]]
     p.set_lineno(0, p.lineno(1))
 
+def p_interface_bus_list_one(p):
+    """
+    interface_bus_list : interface_bus
+    """
+    p[0] = p[1]
+    p.set_lineno(0, p.lineno(1))
 
 def p_interface_buses(p):
     """
@@ -1412,8 +1429,8 @@ def p_interface_buses(p):
 
 def p_interface_bus(p):
     """
-    interface_bus : bus_one
-    
+    interface_bus : bus_one NEWLINE
+                  | bus_one
     """
     p[0] = p[1]
     p.set_lineno(0, p.lineno(1))

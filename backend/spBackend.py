@@ -28,7 +28,7 @@ def buildTree(file_path, include_paths, project_path):
     log.spInfo(0, "BuildTree:" + file_path)
     spHandler = SparrowHandler(file_path, include_paths)
     spHandler.parse()
-    log.spInfo(8, log.genAST(spHandler.getAST()))
+    log.spInfo(8, "Sparrow AST:", log.genAST(spHandler.getAST()))
     import_list = spHandler.getImportList()
     # print (import_list)
     scopelist = []
@@ -49,3 +49,6 @@ def genAbsPath(pathlist, project_path):
 def printCompiledFiles(result):
     pass
 
+def integrate(file_path, project_path):
+    sp_tree = buildTree(file_path, [], project_path)
+    sp_tree.integrate()

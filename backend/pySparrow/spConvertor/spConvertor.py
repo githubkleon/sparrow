@@ -44,7 +44,7 @@ class SparrowConvertor:
 
     def convert(self):
         log.spInfo(9, "Converting...")
-        log.spInfo(8, log.genAST(self.ast))
+        log.spInfo(8, "Sparrow AST Before Conversion:", log.genAST(self.ast))
         self.verilogast = self.genSource(self.ast)
         if (log.LOG_PRIORITY < 8):
             self.verilogast.show()
@@ -243,7 +243,7 @@ class SparrowConvertor:
     def genCaseStatement(self, stmt, name, nonblock=True):
         caselist = ()
         for suite in stmt.suites:
-            # print(suite)
+            log.spInfo(0, "Case suites:", suite)
             if isinstance(suite.test, Identifier):
                 # print (suite.test.name)
                 if suite.test.name == "_":
@@ -275,6 +275,7 @@ class SparrowConvertor:
         elif isinstance(suite, CaseStructure):
             stmt = self.genCaseStatement(suite, name, nonblock)
         else:
+            log.spInfo(0, "Not If or Case Suite:", suite)
             if nonblock:
                 stmt = self.genNonblockingSubstitution(name, suite)
             else:
@@ -384,6 +385,7 @@ class SparrowConvertor:
         elif isinstance(expr, PartialSelection):
             return self.genPartialSelection(expr)
         else:
+            log.spInfo(0, "Unhandled AST Node:", expr)
             return vast.Identifier("Unhandled")
 
 

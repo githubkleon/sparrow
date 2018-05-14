@@ -47,7 +47,7 @@ def pipelineContainer(ast, container):
     if container.clock:
         clockCycle = spLib.SCINOTATION['Giga'] / spLib.SCINOTATION[container.clock.args[2].name] / float(container.clock.args[1].value)
     else:
-        clockCycle = 10
+        clockCycle = 1000
     log.spInfo(0, "CLOCK CYCLE", clockCycle)
     outputs = getOutputPorts(container.buses)
     drain = Vertex(0, 0, None, buildGraph(outputs, clockCycle), None, genMarks(len(outputs)))

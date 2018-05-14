@@ -48,9 +48,15 @@ sparrow.add_command(remove_folder)
 @click.option('--verbose/--non-verbose', '-v', default=False)
 @click.option('--include', '-i', default='.', type=click.Path(exists=True))
 def compile(verbose, include):
-    """Compile project from top file."""
+    """Compile project from the top file."""
     pj.compile(verbose, include)
 sparrow.add_command(compile)
+
+@click.command()
+def integrate():
+    """Generate integration logics."""
+    pj.integrate()
+sparrow.add_command(integrate)
 
 @click.command()
 @click.argument('file_path', type=click.Path(exists=True))

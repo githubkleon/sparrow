@@ -256,3 +256,7 @@ def printSubHierarchy(hier, layer):
 def compile(verbose, include):
     log.spInfo(9, "Compiling " + topFile())
     backend.compile(topFile(), include, getProjectRoot(getCWD()), os.path.split(os.path.realpath(__file__))[0])
+
+def integrate():
+    log.spInfo(9, "Generating integrating logics for " + topFile())
+    backend.integrate(topFile(), getProjectRoot(getCWD()))
